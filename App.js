@@ -1,5 +1,4 @@
 import * as React from 'react';
-import WelcomeScreen from './screens/WelcomeScreen';
 import {createAppContainer} from 'react-navigation';
 import { SwitchNavigator } from './components/SwitchNavigator';
 

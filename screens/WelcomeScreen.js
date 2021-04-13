@@ -58,7 +58,7 @@ export default class WelcomeScreen extends React.Component{
   login=async(email, password)=>{
     firebase.auth().signInWithEmailAndPassword(email, password)
     .then(()=>{
-      this.props.navigation.navigate("TabNavigator")
+      this.props.navigation.navigate("DrawerTab")
     })
     .catch((error)=>{
       var errorMessage = error.message;
