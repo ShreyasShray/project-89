@@ -44,7 +44,8 @@ export default class WelcomeScreen extends React.Component{
           last_name:this.state.last_name,
           user_name:this.state.user_name,
           mobile_number:this.state.mobile_number,
-          address:this.state.address
+          address:this.state.address,
+          email_id:this.state.emailId
         });
         return Alert.alert("User Added Successfully")
       })
@@ -57,7 +58,7 @@ export default class WelcomeScreen extends React.Component{
   login=async(email, password)=>{
     firebase.auth().signInWithEmailAndPassword(email, password)
     .then(()=>{
-      return Alert.alert("Login Successfully")
+      this.props.navigation.navigate("TabNavigator")
     })
     .catch((error)=>{
       var errorMessage = error.message;
@@ -66,7 +67,7 @@ export default class WelcomeScreen extends React.Component{
   }
   render(){
     return(
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView style={{flex:1, backgroundColor:'#f7e0ff'}}>
         <Modal
           animationType="fade"
           transparent={false}
@@ -75,19 +76,19 @@ export default class WelcomeScreen extends React.Component{
           <View>
             <ScrollView>
               <KeyboardAvoidingView style={styles.modalInputBoxContainer}>
-                            <Text style={{textAlign:'center', marginTop:20, marginBottom:20, color:'orange', fontSize:20, fontWeight:'bold'}}>Registration</Text>
-                            <TextInput style={styles.modalInputBox} placeholder="First Name" maxLength={16} onChangeText={(text)=>{this.setState({first_name:text})}} />
-                            <TextInput style={styles.modalInputBox} placeholder="Last Name" maxLength={16} onChangeText={(text)=>{this.setState({last_name:text})}} />
-                            <TextInput style={styles.modalInputBox} placeholder="Mobile Number" keyboardType={'numeric'} maxLength={10} onChangeText={(text)=>{this.setState({mobile_number:text})}} />
-                            <TextInput style={styles.modalInputBox} placeholder="User Name" onChangeText={(text)=>{this.setState({user_name:text})}} />
-                            <TextInput style={styles.modalInputBox} placeholder="Eamil Address" keyboardType="email-address" onChangeText={(text)=>{this.setState({emailId:text})}} />
-                            <TextInput style={styles.modalInputBox} placeholder="Home Address"  multiline={true} onChangeText={(text)=>{this.setState({address:text})}} />
-                            <TextInput style={styles.modalInputBox} placeholder="Create Password" secureTextEntry={true} onChangeText={(text)=>{this.setState({password:text})}} />
-                            <TextInput style={styles.modalInputBox} placeholder="Confirm Password" secureTextEntry={true} onChangeText={(text)=>{this.setState({confirm_password:text})}} />
-                            <View style={styles.modalButtonContainer}>
-                                <TouchableOpacity style={styles.modalButtonStyle} onPress={()=>{this.setState({isModalVisible:false})}}><Text style={{fontSize:20, fontWeight:'bold'}}>back</Text></TouchableOpacity>
-                                <TouchableOpacity style={styles.modalButtonStyle} onPress={()=>{this.userSignUp(this.state.emailId, this.state.password, this.state.confirm_password)}}><Text style={{fontSize:20, fontWeight:'bold'}}>Register</Text></TouchableOpacity>
-                            </View>
+                <Text style={{textAlign:'center', marginTop:20, marginBottom:20, color:'orange', fontSize:20, fontWeight:'bold'}}>Registration</Text>
+                <TextInput style={styles.modalInputBox} placeholder="First Name" maxLength={16} onChangeText={(text)=>{this.setState({first_name:text})}} />
+                <TextInput style={styles.modalInputBox} placeholder="Last Name" maxLength={16} onChangeText={(text)=>{this.setState({last_name:text})}} />
+                <TextInput style={styles.modalInputBox} placeholder="Mobile Number" keyboardType={'numeric'} maxLength={10} onChangeText={(text)=>{this.setState({mobile_number:text})}} />
+                <TextInput style={styles.modalInputBox} placeholder="User Name" onChangeText={(text)=>{this.setState({user_name:text})}} />
+                <TextInput style={styles.modalInputBox} placeholder="Eamil Address" keyboardType="email-address" onChangeText={(text)=>{this.setState({emailId:text})}} />
+                <TextInput style={styles.modalInputBox} placeholder="Home Address"  multiline={true} onChangeText={(text)=>{this.setState({address:text})}} />
+                <TextInput style={styles.modalInputBox} placeholder="Create Password" secureTextEntry={true} onChangeText={(text)=>{this.setState({password:text})}} />
+                <TextInput style={styles.modalInputBox} placeholder="Confirm Password" secureTextEntry={true} onChangeText={(text)=>{this.setState({confirm_password:text})}} />
+                <View style={styles.modalButtonContainer}>
+                    <TouchableOpacity style={styles.modalButtonStyle} onPress={()=>{this.setState({isModalVisible:false})}}><Text style={{fontSize:20, fontWeight:'bold'}}>back</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.modalButtonStyle} onPress={()=>{this.userSignUp(this.state.emailId, this.state.password, this.state.confirm_password)}}><Text style={{fontSize:20, fontWeight:'bold'}}>Register</Text></TouchableOpacity>
+                </View>
               </KeyboardAvoidingView>
             </ScrollView>
           </View>
@@ -98,11 +99,11 @@ export default class WelcomeScreen extends React.Component{
           <TextInput style={styles.inputBox} placeholder="password" secureTextEntry={true} onChangeText={(text)=>{this.setState({password:text})}}></TextInput>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.buttonStyle} onPress={()=>{this.signUp()}}>
-            <Text style={{fontWeight:'bold', fontSize:20, textAlign:'center'}}>Sign Up</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.buttonStyle} onPress={()=>{this.login(this.state.emailId, this.state.password)}}>
             <Text style={{fontWeight:'bold', fontSize:20, textAlign:'center'}}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonStyle} onPress={()=>{this.signUp()}}>
+            <Text style={{fontWeight:'bold', fontSize:20, textAlign:'center'}}>Sign Up</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -115,26 +116,30 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
   inputBox:{
-    borderWidth:1.4,
-    borderRadius:4,
-    paddingLeft:4,
-    marginTop:40,
-    width:280
+    borderBottomWidth:1.4,
+    paddingLeft:10,
+    marginTop:50,
+    width:280,
+    fontSize:18
   },
   buttonContainer:{
-    display:'flex',
-    flexDirection:'row',
-    justifyContent:'space-around'
+    alignItems:'center'
   },
   buttonStyle:{
-    borderRadius:6,
+    borderRadius:10,
     paddingLeft:5,
     paddingRight:5,
     backgroundColor:"#1c9cff",
-    width:100,
-    marginTop:40,
-    shadowOffset:{width:0, height:5},
-    shadowColor:"gray"
+    width:280,
+    marginTop:50,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.44,
+    shadowRadius: 10.32,
+    elevation: 16
   },
   modalInputBoxContainer:{
     alignItems:'center'
