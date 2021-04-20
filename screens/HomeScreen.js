@@ -56,7 +56,7 @@ export default class HomeScreen extends React.Component{
     render(){
         return(
             <KeyboardAvoidingView>
-                <MyHeader title="Home Screen"/>
+                <MyHeader title="Home Screen" navigation={this.props.navigation} />
                 {
                     this.state.allItems.length === 0?(
                         <View>

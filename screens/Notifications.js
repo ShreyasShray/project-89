@@ -62,7 +62,7 @@ export default class Notifications extends React.Component{
     render(){
         return(
             <View>
-                <MyHeader title="Notifications" />
+                <MyHeader title="Notifications" navigation={this.props.navigation} />
                 <ScrollView>
                     {
                         this.state.all_notifications.length!==0?(

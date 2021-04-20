@@ -38,7 +38,7 @@ export default class ExchangeScreen extends React.Component{
     render(){
         return(
             <KeyboardAvoidingView>
-                <MyHeader title="Exchange"/>
+                <MyHeader title="Exchange" navigation={this.props.navigation} />
                 <View style={{alignItems:'center', marginTop:140}}>
                     <TextInput style={styles.inputBox} placeholder="Item Name" onChangeText={(text)=>{this.setState({item_name:text})}}></TextInput>
                     <TextInput style={[styles.inputBox, {height:100}]} multiline numberOfLines={14}  placeholder="Description" onChangeText={(text)=>{this.setState({description:text})}}></TextInput>

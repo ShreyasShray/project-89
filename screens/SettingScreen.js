@@ -57,7 +57,7 @@ export default class SetttingScreen extends React.Component{
     render(){
         return(
             <KeyboardAvoidingView>
-                <MyHeader title="Settings"></MyHeader>
+                <MyHeader title="Settings" navigation={this.props.navigation} ></MyHeader>
                 <ScrollView>
                     <View style={{alignItems:'center'}}>
                         <TextInput style={styles.inputBox } value={this.state.first_name} placeholder="First Name" onChangeText={(text)=>{this.setState({first_name:text})}}></TextInput>
