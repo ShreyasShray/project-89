@@ -16,6 +16,7 @@ export default class ReceiverDetailsScreen extends React.Component{
         super(props);
         this.state={
             user_id:firebase.auth().currentUser.email,
+            user_name:'',
             receiver_id:this.props.navigation.getParam("details")["user_id"],
             request_id:this.props.navigation.getParam("details")["request_id"],
             item_name:this.props.navigation.getParam("details")["item_name"],
@@ -48,6 +49,19 @@ export default class ReceiverDetailsScreen extends React.Component{
             })
         })
     }
+
+    getUserName=async(userId)=>{
+        db.collection("users").where("email_id", "==", userId)
+        .get()
+        .then(snapshot=>{
+            snapshot.forEach((doc)=>{
+                this.setState({
+                    user_name: doc.data().first_name + " " + doc.data().last_name
+                })
+            })
+        })
+    }
+
     addItem=async()=>{
         db.collection("all_donations").add({
             item_name:this.state.item_name,
@@ -58,8 +72,23 @@ export default class ReceiverDetailsScreen extends React.Component{
         })
         Alert.alert("Item added")
     }
+
+    addNotification=async()=>{
+        var message = this.state.user_name + " has shown interest in donationg the item"
+        db.collection("notifications").add({
+            targated_user_id:this.state.receiver_id,
+            donor_id:this.state.user_id,
+            request_id:this.state.request_id,
+            item_name:this.state.item_name,
+            date:firebase.firestore.FieldValue.serverTimestamp(),
+            notification_status:"unread",
+            message:message
+        })
+    }
+
     componentDidMount=()=>{
-        this.getReceiverDetails()
+        this.getReceiverDetails();
+        this.getUserName(this.state.user_id);
     }
     render(){
         return(
@@ -86,8 +115,11 @@ export default class ReceiverDetailsScreen extends React.Component{
                     </Card>
                     <View style={{alignItems:'center'}}>
                         {this.state.user_id===this.state.receiver_id?(undefined):(
-                        <TouchableOpacity style={styles.buttonStyle} onPress={()=>{this.addItem()}}>
-                            <Text style={{fontSize:20, fontWeight:'bold', color:"#ffff"}}>Add to my Donation</Text>
+                        <TouchableOpacity style={styles.buttonStyle} onPress={()=>{
+                            this.addItem();
+                            this.addNotification()
+                        }}>
+                            <Text style={{fontSize:20, fontWeight:'bold', color:"#ffff"}}>Exchange</Text>
                         </TouchableOpacity>
                         )}
                     </View>

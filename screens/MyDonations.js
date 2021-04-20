@@ -16,6 +16,7 @@ export default class MyDonations extends React.Component{
         super();
         this.state={
             user_id:firebase.auth().currentUser.email,
+            user_name:'',
             allDonations:[]
         }
         this.allDonationRef=null
@@ -31,12 +32,78 @@ export default class MyDonations extends React.Component{
         })
     }
 
+    getUserName=async(userId)=>{
+        db.collection("users").where("email_id", "==", userId)
+        .get()
+        .then(snapshot=>{
+            snapshot.forEach((doc)=>{
+                this.setState({
+                    user_name: doc.data().first_name + " " + doc.data().last_name
+                })
+            })
+        })
+    }
+
+    sendItem=async(itemDetails)=>{
+        if(itemDetails.request_status==="Item Sent"){
+            var requestStatus = "Donor Interested";
+            db.collection("all_donations").where("donor_id", "==", itemDetails.donor_id)
+            .where("request_status", "==", itemDetails.request_status)
+            .get()
+            .then((snapshot)=>{
+                snapshot.forEach((doc)=>{
+                    db.collection("all_donations").doc(doc.id).update({
+                        request_status: "Donor Interested"
+                    });
+                    this.sendNotification(itemDetails, requestStatus)
+                })
+            })
+        }else{
+            var requestStatus = "Item Sent";
+            db.collection("all_donations").where("donor_id", "==", itemDetails.donor_id)
+            .where("request_id", "==", itemDetails.request_id)
+            .get()
+            .then((snapshot)=>{
+                snapshot.forEach((doc)=>{
+                    db.collection("all_donations").doc(doc.id).update({
+                        request_status:"Item Sent"
+                    });
+                    this.sendNotification(itemDetails, requestStatus)
+                })
+            })
+        }
+    }
+
+    sendNotification=async(itemDetails, request_status)=>{
+        var request_id = itemDetails.request_id;
+        var donor_id = itemDetails.donor_id;
+        db.collection("notifications").where("request_id", "==", request_id)
+        .where("donor_id", "==", donor_id)
+        .get()
+        .then((snapshot)=>{
+            snapshot.forEach((doc)=>{
+                var message = "";
+                if(request_status==="Item Sent"){
+                    message = this.state.user_name + " has sent the item"
+                }else{
+                    message = this.state.user_name + " has shown interest in donating the item"
+                }
+                db.collection("notifications").doc(doc.id).update({
+                    message:message,
+                    notification_status:"unread",
+                    date:firebase.firestore.FieldValue.serverTimestamp()
+                })
+            })
+        })
+    }
+
     componentDidMount=()=>{
-        this.getAllDonations()
+        this.getAllDonations();
+        this.getUserName(this.state.user_id);
     }
 
     componentWillUnmount=()=>{
-        this.allDonationRef()
+        this.allDonationRef();
     }
 
     keyExtractor=(item, index) => index.toString()
@@ -49,7 +116,11 @@ export default class MyDonations extends React.Component{
             subtitle={"Requested by: " + item.requested_by + "\nStatus: " + item.request_status}
             titleStyle={{textAlign:'center', fontSize:20, fontWeight:'bold'}}
             rightElement={
-                <TouchableOpacity style={{width:100, backgroundColor:"#ff5722", alignItems:'center', padding:6}}>
+                <TouchableOpacity 
+                    onPress={()=>{
+                        this.sendItem(item);
+                    }}
+                    style={{width:100, backgroundColor:"#ff5722", alignItems:'center', padding:6}}>
                     <Text style={{fontSize:16, color:'white'}}>Send Item</Text>
                 </TouchableOpacity>
             }
@@ -60,7 +131,7 @@ export default class MyDonations extends React.Component{
     render(){
         return(
             <View>
-                <MyHeader title="My Donations" />
+                <MyHeader title="My Barters" />
                 <View>
                     {this.state.allDonations.length===0?(
                         <View>
