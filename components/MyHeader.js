@@ -2,16 +2,19 @@ import React, { Component} from 'react';
 import { Header,Icon,Badge } from 'react-native-elements';
 import { View, Text, StyeSheet ,Alert} from 'react-native';
 import db from '../config';
+import firebase from 'firebase';
 
 export default class MyHeader extends Component{
   constructor(props){
     super(props);
     this.state={
-      vlaue:''
+      vlaue:'',
+      user_id:firebase.auth().currentUser.email
     }
   }
   getNumberOfUnreadNotification=()=>{
     db.collection("notifications").where("notification_status", "==", "unread")
+    .where("targated_user_id", "==", this.state.user_id)
     .onSnapshot(snapshot=>{
       var unreadNotification = snapshot.docs.map((doc)=>{doc.data()})
       this.setState({

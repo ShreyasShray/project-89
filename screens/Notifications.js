@@ -10,6 +10,7 @@ import {ListItem} from 'react-native-elements';
 import MyHeader from '../components/MyHeader';
 import firebase from 'firebase';
 import db from '../config';
+import SwipeableFlatlist from '../components/SwipeableFlatlist';
 
 export default class Notifications extends React.Component{
     constructor(){
@@ -66,11 +67,7 @@ export default class Notifications extends React.Component{
                 <ScrollView>
                     {
                         this.state.all_notifications.length!==0?(
-                            <FlatList
-                                keyExtractor={this.keyExtractor}
-                                data={this.state.all_notifications}
-                                renderItem={this.renderItem}
-                            ></FlatList>
+                            <SwipeableFlatlist all_notifications={this.state.all_notifications} />
                         ):(
                             <View style={{alignItems:'center', marginTop:200}}>
                                 <Text style={{fontSize:20}}>

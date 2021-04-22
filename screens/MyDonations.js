@@ -131,7 +131,7 @@ export default class MyDonations extends React.Component{
     render(){
         return(
             <View>
-                <MyHeader title="My Barters" navigation={this.props.nevigation} />
+                <MyHeader title="My Barters" navigation={this.props.navigation} />
                 <View>
                     {this.state.allDonations.length===0?(
                         <View>
