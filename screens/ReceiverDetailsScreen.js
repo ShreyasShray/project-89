@@ -76,7 +76,7 @@ export default class ReceiverDetailsScreen extends React.Component{
     addNotification=async()=>{
         var message = this.state.user_name + " has shown interest in donationg the item"
         db.collection("notifications").add({
-            targated_user_id:this.state.receiver_id,
+            targeted_user_id:this.state.receiver_id,
             donor_id:this.state.user_id,
             request_id:this.state.request_id,
             item_name:this.state.item_name,
@@ -117,7 +117,8 @@ export default class ReceiverDetailsScreen extends React.Component{
                         {this.state.user_id===this.state.receiver_id?(undefined):(
                         <TouchableOpacity style={styles.buttonStyle} onPress={()=>{
                             this.addItem();
-                            this.addNotification()
+                            this.addNotification();
+                            this.props.navigation.navigate("MyDonation")
                         }}>
                             <Text style={{fontSize:20, fontWeight:'bold', color:"#ffff"}}>Exchange</Text>
                         </TouchableOpacity>

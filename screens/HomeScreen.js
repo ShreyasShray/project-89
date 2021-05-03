@@ -10,6 +10,7 @@ import {
 import {ListItem} from 'react-native-elements';
 import MyHeader from '../components/MyHeader';
 import db from '../config';
+import firebase from 'firebase';
 
 export default class HomeScreen extends React.Component{
     constructor(){
@@ -19,8 +20,9 @@ export default class HomeScreen extends React.Component{
         },
         this.requestRef = null;
     }
+
     getAllItemsList=async()=>{
-        this.requestRef = db.collection("item_request")
+        this.requestRef = db.collection("item_request").where("item_status", "==", "requested")
         .onSnapshot(snapshot=>{
             var allItemsList = snapshot.docs.map(document=>document.data())
             this.setState({
@@ -28,12 +30,15 @@ export default class HomeScreen extends React.Component{
             })
         })
     }
+    
     componentDidMount=()=>{
         this.getAllItemsList()
     }
+
     componentWillUnmount=()=>{
         this.requestRef()
     }
+
     keyExtractor = (item, index) => index.toString()
 
     renderItem = ( {item, i} ) =>{

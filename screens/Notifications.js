@@ -25,7 +25,7 @@ export default class Notifications extends React.Component{
     getNotification=async()=>{
         this.notificationRef = db.collection("notifications")
         .where("notification_status", "==", "unread")
-        .where("targated_user_id", "==", this.state.user_id)
+        .where("targeted_user_id", "==", this.state.user_id)
         .onSnapshot((snapshot)=>{
             var allNotification = []
             snapshot.docs.map((doc)=>{

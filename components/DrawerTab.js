@@ -5,12 +5,14 @@ import SetttingScreen from '../screens/SettingScreen';
 import {AppTabNavigator} from './AppTabNavigator';
 import SideBarMenu from './SideBarMenu';
 import Notifications from '../screens/Notifications';
+import ReceivedItemScreen from '../screens/ReceivedItemScreen'
 
 export const DrawerTab = createDrawerNavigator({
     Home:{screen:AppTabNavigator},
     Settings:{screen:SetttingScreen},
     MyDonation:{screen:MyDonations},
-    Notifications:{screen:Notifications}
+    Notifications:{screen:Notifications},
+    ReceivedItems:{screen:ReceivedItemScreen}
 },{
     contentComponent:SideBarMenu
 },{

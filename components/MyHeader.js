@@ -14,7 +14,7 @@ export default class MyHeader extends Component{
   }
   getNumberOfUnreadNotification=()=>{
     db.collection("notifications").where("notification_status", "==", "unread")
-    .where("targated_user_id", "==", this.state.user_id)
+    .where("targeted_user_id", "==", this.state.user_id)
     .onSnapshot(snapshot=>{
       var unreadNotification = snapshot.docs.map((doc)=>{doc.data()})
       this.setState({

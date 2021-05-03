@@ -21,7 +21,7 @@ export default class SwipeableFlatlist extends React.Component{
     }
 
     updateMarkAsRead=async()=>{
-        db.collection("notifications").where("targated_user_id", "==", this.state.user_id)
+        db.collection("notifications").where("targeted_user_id", "==", this.state.user_id)
         .where("notification_status", "==", "unread")
         .get()
         .then((snapshot)=>{

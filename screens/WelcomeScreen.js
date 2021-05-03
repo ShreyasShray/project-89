@@ -45,7 +45,8 @@ export default class WelcomeScreen extends React.Component{
           user_name:this.state.user_name,
           mobile_number:this.state.mobile_number,
           address:this.state.address,
-          email_id:this.state.emailId
+          email_id:this.state.emailId,
+          isActiveRequest:false
         });
         return Alert.alert("User Added Successfully")
       })
