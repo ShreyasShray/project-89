@@ -3,7 +3,7 @@ import {createDrawerNavigator} from 'react-navigation-drawer';
 import MyDonations from '../screens/MyDonations';
 import SetttingScreen from '../screens/SettingScreen';
 import {AppTabNavigator} from './AppTabNavigator';
-import SideBarMenu from './SideBarMenu';
+import SideBarMenu from '../components/SideBarMenu';
 import Notifications from '../screens/Notifications';
 import ReceivedItemScreen from '../screens/ReceivedItemScreen'
 
