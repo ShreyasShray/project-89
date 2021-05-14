@@ -19,6 +19,7 @@ export default class WelcomeScreen extends React.Component{
   constructor(){
     super();
     this.state={
+      user_id:firebase.auth().currentUser.email,
       emailId:'',
       password:'',
       confirmPassword:'',
@@ -27,7 +28,8 @@ export default class WelcomeScreen extends React.Component{
       user_name:'',
       mobile_number:'',
       address:'',
-      isModalVisible:false
+      isModalVisible:false,
+      currencyCode:''
     }
   }
   signUp=async()=>{
@@ -46,7 +48,8 @@ export default class WelcomeScreen extends React.Component{
           mobile_number:this.state.mobile_number,
           address:this.state.address,
           email_id:this.state.emailId,
-          isActiveRequest:false
+          isActiveRequest:false,
+          currencyCode:''
         });
         return Alert.alert("User Added Successfully")
       })
@@ -66,6 +69,19 @@ export default class WelcomeScreen extends React.Component{
       return Alert.alert(errorMessage);
     })
   }
+
+  currencyCode=(currency)=>{
+    db.collection("users").where("email_id", "==", this.state.user_id)
+    .get()
+    .then((snapshot)=>{
+      snapshot.forEach((doc)=>{
+        db.collection("users").doc(doc.id).update({
+          currencyCode:currency
+        })
+      })
+    })
+  }
+
   render(){
     return(
       <KeyboardAvoidingView style={{flex:1, backgroundColor:'#f7e0ff'}}>
@@ -98,9 +114,15 @@ export default class WelcomeScreen extends React.Component{
         <View style={styles.boxContainer}>
           <TextInput style={styles.inputBox} placeholder="abc@example.com" keyboardType="email-address" onChangeText={(text)=>{this.setState({emailId:text})}}></TextInput>
           <TextInput style={styles.inputBox} placeholder="password" secureTextEntry={true} onChangeText={(text)=>{this.setState({password:text})}}></TextInput>
+          <TextInput style={styles.inputBox} placeholder=" Country Currency Code " onChangeText={(text)=>{
+            this.setState({currencyCode:text})
+            }} ></TextInput>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.buttonStyle} onPress={()=>{this.login(this.state.emailId, this.state.password)}}>
+          <TouchableOpacity style={styles.buttonStyle} onPress={()=>{()=>{
+            this.login(this.state.emailId, this.state.password)
+            this.currencyCode(this.state.currencyCode)
+            }}}>
             <Text style={{fontWeight:'bold', fontSize:20, textAlign:'center'}}>Login</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttonStyle} onPress={()=>{this.signUp()}}>

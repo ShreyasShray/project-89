@@ -13,8 +13,8 @@ import db from '../config';
 import { Alert } from 'react-native';
 
 export default class ExchangeScreen extends React.Component{
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state={
             user_id:firebase.auth().currentUser.email,
             item_name:'',
@@ -24,7 +24,8 @@ export default class ExchangeScreen extends React.Component{
             doc_id:'',
             requested_item_name:'',
             requested_item_status:'',
-            request_id:''
+            request_id:'',
+            currencyCode:this.props.navigation.getParam("currencyCode")
         }
     }
 
@@ -138,7 +139,8 @@ export default class ExchangeScreen extends React.Component{
 
     componentDidMount=()=>{
         this.getActiveRequestDetails();
-        this.getRequestedItemDetails()
+        this.getRequestedItemDetails();
+        console.log(" currency Code " , this.state.currencyCode)
     }
 
     render(){
