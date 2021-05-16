@@ -21,10 +21,13 @@ export default class ReceiverDetailsScreen extends React.Component{
             request_id:this.props.navigation.getParam("details")["request_id"],
             item_name:this.props.navigation.getParam("details")["item_name"],
             reason_to_request:this.props.navigation.getParam("details")["description"],
+            item_value:this.props.navigation.getParam("details")["value"],
             receiver_name:'',
             receiver_contact:'',
             receiver_address:'',
             receiver_request_docId:'',
+            currencyCode:'',
+            currencyValue:''
         }
     }
     getReceiverDetails=async()=>{
@@ -86,9 +89,35 @@ export default class ReceiverDetailsScreen extends React.Component{
         })
     }
 
+    getCurrencyCode=async()=>{
+        db.collection("users").where("email_id", "==", this.state.user_id)
+        .get()
+        .then((snapshot)=>{
+            snapshot.forEach((doc)=>{
+                this.setState({
+                    currencyCode:doc.data().currencyCode
+                })
+                console.log("Currency Code", this.state.currencyCode)
+            })
+        })
+        fetch("http://data.fixer.io/api/latest?access_key=356e72c560338820c6536705515f3894")
+        .then(response=>{
+            return response.json();
+        })
+        .then((responseData)=>{
+            var currency = this.state.currencyCode
+            var currencyValue = responseData.rates[currency]
+            this.setState({
+                currencyValue:currencyValue
+            })
+            console.log("Currency Value", this.state.currencyValue)
+        })
+    }
+
     componentDidMount=()=>{
         this.getReceiverDetails();
         this.getUserName(this.state.user_id);
+        this.getCurrencyCode();
     }
     render(){
         return(
@@ -100,6 +129,9 @@ export default class ReceiverDetailsScreen extends React.Component{
                         </Card>
                         <Card>
                             <Text>Description: {this.state.reason_to_request}</Text>
+                        </Card>
+                        <Card>
+                            <Text>Value: {Math.round(this.state.item_value*this.state.currencyValue)}</Text>
                         </Card>
                     </Card>
                     <Card title="Receiver Details" titleStyle={{fontSize:20, fontWeight:'bold', textAlign:'center'}}>

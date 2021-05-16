@@ -5,12 +5,13 @@ import {
     StyleSheet,
     TouchableOpacity,
     TextInput,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    ScrollView,
+    Alert
 } from 'react-native';
 import MyHeader from '../components/MyHeader';
 import firebase from 'firebase';
 import db from '../config';
-import { Alert } from 'react-native';
 
 export default class ExchangeScreen extends React.Component{
     constructor(props){
@@ -19,13 +20,16 @@ export default class ExchangeScreen extends React.Component{
             user_id:firebase.auth().currentUser.email,
             item_name:'',
             description:'',
+            item_value:'',
             isActiveRequest:'',
             user_doc_id:'',
             doc_id:'',
             requested_item_name:'',
             requested_item_status:'',
             request_id:'',
-            currencyCode:this.props.navigation.getParam("currencyCode")
+            requested_item_value:'',
+            currencyCode:'',
+            currencyValue:''
         }
     }
 
@@ -42,6 +46,7 @@ export default class ExchangeScreen extends React.Component{
             user_id:userId,
             request_id:requestId,
             item_status:"requested",
+            value:(this.state.item_value/this.state.currencyValue),
             date:firebase.firestore.FieldValue.serverTimestamp()
         })
         Alert.alert("Item Added");
@@ -77,8 +82,10 @@ export default class ExchangeScreen extends React.Component{
                     requested_item_name:doc.data().item_name,
                     requested_item_status:doc.data().item_status,
                     request_id:doc.data().request_id,
-                    doc_id:doc.id
+                    doc_id:doc.id,
+                    requested_item_value:(doc.data().value*this.state.currencyValue)
                 })
+                console.log(this.state.request_id)
             })
         })
     }
@@ -136,11 +143,36 @@ export default class ExchangeScreen extends React.Component{
             request_id:requestId
         })
     }
+    
+    getCurrencyCode=async()=>{
+        db.collection("users").where("email_id", "==", this.state.user_id)
+        .get()
+        .then((snapshot)=>{
+            snapshot.forEach((doc)=>{
+                this.setState({
+                    currencyCode:doc.data().currencyCode
+                })
+                console.log("Currency Code", this.state.currencyCode)
+            })
+        })
+        fetch("http://data.fixer.io/api/latest?access_key=356e72c560338820c6536705515f3894")
+        .then(response=>{
+            return response.json();
+        })
+        .then((responseData)=>{
+            var currency = this.state.currencyCode
+            var currencyValue = responseData.rates[currency]
+            this.setState({
+                currencyValue:currencyValue
+            })
+            console.log("Currency Value", this.state.currencyValue)
+        })
+    }
 
     componentDidMount=()=>{
         this.getActiveRequestDetails();
         this.getRequestedItemDetails();
-        console.log(" currency Code " , this.state.currencyCode)
+        this.getCurrencyCode();
     }
 
     render(){
@@ -150,6 +182,7 @@ export default class ExchangeScreen extends React.Component{
                     <MyHeader title="Exchange" navigation={this.props.navigation} />
                     <View style={{alignItems:'center', marginTop:140}}>
                         <TextInput style={styles.inputBox} placeholder="Item Name" onChangeText={(text)=>{this.setState({item_name:text})}}></TextInput>
+                        <TextInput style={styles.inputBox} placeholder="Value of your item" onChangeText={(text)=>{this.setState({item_value:text})}}></TextInput>
                         <TextInput style={[styles.inputBox, {height:100}]} multiline numberOfLines={14}  placeholder="Description" onChangeText={(text)=>{this.setState({description:text})}}></TextInput>
                     </View>
                     <View style={{alignItems:'center', marginBottom:40}}>
@@ -161,11 +194,16 @@ export default class ExchangeScreen extends React.Component{
             );
         }else{
             return(
+                <KeyboardAvoidingView>
+                <ScrollView>
                 <View style={{flex:1, alignItems:'center'}}>
+                    <MyHeader title="Exchange Screen" navigation = {this.props.navigation} />
                     <Text style={{textAlign:'center', fontSize:20, marginTop:100}}>Item Name</Text>
                     <Text style={{borderWidth:2, width:280, borderColor:"#ff5722", padding:6, fontSize:18, textAlign:'center'}}>{this.state.requested_item_name}</Text>
-                    <Text style={{textAlign:'center', fontSize:20, marginTop:40}}>Description</Text>
+                    <Text style={{textAlign:'center', fontSize:20, marginTop:40}}>Status</Text>
                     <Text style={{borderWidth:2, width:280, borderColor:"#ff5722", padding:6, fontSize:18, textAlign:'center'}} >{this.state.requested_item_status}</Text>
+                    <Text style={{textAlign:'center', fontSize:20, marginTop:40}}>Value</Text>
+                    <Text style={{borderWidth:2, width:280, borderColor:"#ff5722", padding:6, fontSize:18, textAlign:'center'}} >{this.state.requested_item_value}</Text>
                     <TouchableOpacity style={styles.buttonStyle} onPress={()=>{
                         this.itemReceived();
                         this.sendNotification();
@@ -174,6 +212,8 @@ export default class ExchangeScreen extends React.Component{
                         <Text style={styles.buttonText}>I Received the Item</Text>
                     </TouchableOpacity>
                 </View>
+                </ScrollView>
+                </KeyboardAvoidingView>
             );
         }
     }

@@ -19,7 +19,6 @@ export default class WelcomeScreen extends React.Component{
   constructor(){
     super();
     this.state={
-      user_id:firebase.auth().currentUser.email,
       emailId:'',
       password:'',
       confirmPassword:'',
@@ -71,7 +70,7 @@ export default class WelcomeScreen extends React.Component{
   }
 
   currencyCode=(currency)=>{
-    db.collection("users").where("email_id", "==", this.state.user_id)
+    db.collection("users").where("email_id", "==", firebase.auth().currentUser.email)
     .get()
     .then((snapshot)=>{
       snapshot.forEach((doc)=>{
@@ -119,10 +118,10 @@ export default class WelcomeScreen extends React.Component{
             }} ></TextInput>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.buttonStyle} onPress={()=>{()=>{
+          <TouchableOpacity style={styles.buttonStyle} onPress={()=>{
             this.login(this.state.emailId, this.state.password)
             this.currencyCode(this.state.currencyCode)
-            }}}>
+          }}>
             <Text style={{fontWeight:'bold', fontSize:20, textAlign:'center'}}>Login</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttonStyle} onPress={()=>{this.signUp()}}>
