@@ -88,20 +88,7 @@ export default class SideBarMenu extends React.Component{
 
     render(){
         return(
-            <View>
-
-                <DrawerItems
-                    {...this.props}
-                />
-
-                <View>
-                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>{
-                        firebase.auth().signOut()
-                        this.props.navigation.navigate("WelcomeScreen")
-                    }}>
-                        <Text style={styles.displayText}>LogOut</Text>
-                    </TouchableOpacity>
-                </View>
+            <View style={{flex:1}}>
                 <View style={{flex: 0.5,alignItems: "center",backgroundColor: "orange"}}>
                     <Avatar
                         rounded
@@ -117,6 +104,19 @@ export default class SideBarMenu extends React.Component{
                     <Text style={{ fontWeight: "100", fontSize: 20, paddingTop: 10 }}>
                         {this.state.name}
                     </Text>
+                </View>
+
+                <DrawerItems
+                    {...this.props}
+                />
+
+                <View>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>{
+                        firebase.auth().signOut()
+                        this.props.navigation.navigate("WelcomeScreen")
+                    }}>
+                        <Text style={styles.displayText}>LogOut</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         );
