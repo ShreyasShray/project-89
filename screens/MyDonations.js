@@ -8,8 +8,9 @@ import {
 } from 'react-native';
 import firebase from 'firebase';
 import db from '../config';
-import {ListItem, Icon} from 'react-native-elements'
+import {ListItem, Icon} from 'react-native-elements';
 import MyHeader from '../components/MyHeader';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export default class MyDonations extends React.Component{
     constructor(){

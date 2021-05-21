@@ -10,6 +10,7 @@ import firebase from 'firebase';
 import db from '../config';
 import {Card} from 'react-native-elements';
 import { Alert } from 'react-native';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export default class ReceiverDetailsScreen extends React.Component{
     constructor(props){

@@ -9,6 +9,7 @@ import {ListItem} from 'react-native-elements';
 import firebase from 'firebase';
 import db from '../config'
 import MyHeader from '../components/MyHeader';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export default class ReceivedItemScreen extends React.Component{
     constructor(){

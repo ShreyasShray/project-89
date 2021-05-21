@@ -11,6 +11,7 @@ import {
 import MyHeader from '../components/MyHeader'
 import firebase from 'firebase';
 import db from '../config';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export default class SetttingScreen extends React.Component{
     constructor(){
