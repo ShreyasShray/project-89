@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import AppHeader from '../components/AppHeader';
 import firebase from 'firebase';
-import db from '../config'
+import db from '../config';
 
 export default class WelcomeScreen extends React.Component{
   constructor(){

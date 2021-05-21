@@ -78,17 +78,17 @@ export default class SetttingScreen extends React.Component{
 
 const styles = StyleSheet.create({
     inputBox:{
-        width:280,
-        paddingLeft:6,
-        borderWidth:1,
-        borderRadius:4,
-        marginTop:50
+        width:RFValue(280),
+        paddingLeft:RFValue(6),
+        borderWidth:RFValue(1),
+        borderRadius:RFValue(4),
+        marginTop:RFValue(50)
     },
     buttonStyle:{
         backgroundColor:"#ff5722",
-        width:280,
-        marginTop:40,
-        borderRadius:10,
+        width:RFValue(280),
+        marginTop:RFValue(40),
+        borderRadius:RFValue(10),
         shadowColor:"#000",
         shadowOffset:{
             width:0,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     },
     buttonText:{
         textAlign:'center',
-        fontSize:20,
+        fontSize:RFValue(20),
         fontWeight:'bold',
         padding:8,
         color:'white'

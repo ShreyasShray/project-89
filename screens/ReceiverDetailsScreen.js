@@ -166,11 +166,11 @@ const styles = StyleSheet.create({
     buttonStyle:{
         backgroundColor:"#ff5722",
         alignItems:'center',
-        padding:10,
-        width:280,
-        marginTop:40,
-        borderRadius:10,
-        marginBottom:40,
+        padding:RFValue(10),
+        width:RFValue(280),
+        marginTop:RFValue(40),
+        borderRadius:RFValue(10),
+        marginBottom:RFValue(40),
         shadowColor:"#000",
         shadowOffset:{
             width:0,

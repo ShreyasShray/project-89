@@ -114,14 +114,14 @@ export default class MyDonations extends React.Component{
             key={i}
             title={item.item_name}
             subtitle={"Requested by: " + item.requested_by + "\nStatus: " + item.request_status}
-            titleStyle={{textAlign:'center', fontSize:20, fontWeight:'bold'}}
+            titleStyle={{textAlign:'center', fontSize:RFValue(20), fontWeight:'bold'}}
             rightElement={
                 <TouchableOpacity 
                     onPress={()=>{
                         this.sendItem(item);
                     }}
-                    style={{width:100, backgroundColor:"#ff5722", alignItems:'center', padding:6}}>
-                    <Text style={{fontSize:16, color:'white'}}>Send Item</Text>
+                    style={{width:RFValue(100), backgroundColor:"#ff5722", alignItems:'center', padding:6}}>
+                    <Text style={{fontSize:RFValue(16), color:'white'}}>Send Item</Text>
                 </TouchableOpacity>
             }
             bottomDivider
@@ -135,7 +135,7 @@ export default class MyDonations extends React.Component{
                 <View>
                     {this.state.allDonations.length===0?(
                         <View>
-                            <Text style={{textAlign:'center', marginTop:200, fontSize:18}}>No Donations</Text>
+                            <Text style={{textAlign:'center', marginTop:RFValue(200), fontSize:RFValue(18)}}>No Donations</Text>
                         </View>
                     ):(
                         <FlatList

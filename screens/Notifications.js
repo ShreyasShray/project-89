@@ -69,8 +69,8 @@ export default class Notifications extends React.Component{
                         this.state.all_notifications.length!==0?(
                             <SwipeableFlatlist all_notifications={this.state.all_notifications} />
                         ):(
-                            <View style={{alignItems:'center', marginTop:200}}>
-                                <Text style={{fontSize:20}}>
+                            <View style={{alignItems:'center', marginTop:RFValue(200)}}>
+                                <Text style={{fontSize:RFValue(20)}}>
                                     You have no notifications
                                 </Text>
                             </View>

@@ -41,7 +41,7 @@ export default class ReceivedItemScreen extends React.Component{
                 key={index}
                 title={item.item_name}
                 subtitle={item.item_status}
-                titleStyle={{fontSize:20, fontWeight:'bold', color:"#000", textAlign:'center'}}
+                titleStyle={{fontSize:RFValue(20), fontWeight:'bold', color:"#000", textAlign:'center'}}
                 bottomDivider
             ></ListItem>
         );

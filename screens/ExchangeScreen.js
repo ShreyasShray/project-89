@@ -12,6 +12,8 @@ import {
 import MyHeader from '../components/MyHeader';
 import firebase from 'firebase';
 import db from '../config';
+import {Input} from 'react-native-elements';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export default class ExchangeScreen extends React.Component{
     constructor(props){
@@ -180,12 +182,28 @@ export default class ExchangeScreen extends React.Component{
             return(
                 <KeyboardAvoidingView>
                     <MyHeader title="Exchange" navigation={this.props.navigation} />
-                    <View style={{alignItems:'center', marginTop:140}}>
-                        <TextInput style={styles.inputBox} placeholder="Item Name" onChangeText={(text)=>{this.setState({item_name:text})}}></TextInput>
-                        <TextInput style={styles.inputBox} placeholder="Value of your item" onChangeText={(text)=>{this.setState({item_value:text})}}></TextInput>
-                        <TextInput style={[styles.inputBox, {height:100}]} multiline numberOfLines={14}  placeholder="Description" onChangeText={(text)=>{this.setState({description:text})}}></TextInput>
+                    <View style={{alignItems:'center', marginTop:RFValue(140)}}>
+                        <Input 
+                        style={styles.inputBox} 
+                        label="Item Name"
+                        placeholder="Item Name" 
+                        onChangeText={(text)=>{this.setState({item_name:text})}}
+                        ></Input>
+                        <Input 
+                        style={styles.inputBox} 
+                        label="Value"
+                        placeholder="Value of your item" 
+                        onChangeText={(text)=>{this.setState({item_value:text})}}
+                        ></Input>
+                        <Input 
+                        style={[styles.inputBox, {height:100}]} 
+                        multiline numberOfLines={14}  
+                        label="Description"
+                        placeholder="Description" 
+                        onChangeText={(text)=>{this.setState({description:text})}}
+                        ></Input>
                     </View>
-                    <View style={{alignItems:'center', marginBottom:40}}>
+                    <View style={{alignItems:'center', marginBottom:RFValue(40)}}>
                         <TouchableOpacity style={styles.buttonStyle} onPress={()=>{this.addItemRequest()}}>
                             <Text style={styles.buttonText}>Add Item</Text>
                         </TouchableOpacity>
@@ -198,12 +216,12 @@ export default class ExchangeScreen extends React.Component{
                 <ScrollView>
                 <View style={{flex:1, alignItems:'center'}}>
                     <MyHeader title="Exchange Screen" navigation = {this.props.navigation} />
-                    <Text style={{textAlign:'center', fontSize:20, marginTop:100}}>Item Name</Text>
-                    <Text style={{borderWidth:2, width:280, borderColor:"#ff5722", padding:6, fontSize:18, textAlign:'center'}}>{this.state.requested_item_name}</Text>
-                    <Text style={{textAlign:'center', fontSize:20, marginTop:40}}>Status</Text>
-                    <Text style={{borderWidth:2, width:280, borderColor:"#ff5722", padding:6, fontSize:18, textAlign:'center'}} >{this.state.requested_item_status}</Text>
-                    <Text style={{textAlign:'center', fontSize:20, marginTop:40}}>Value</Text>
-                    <Text style={{borderWidth:2, width:280, borderColor:"#ff5722", padding:6, fontSize:18, textAlign:'center'}} >{this.state.requested_item_value}</Text>
+                    <Text style={{textAlign:'center', fontSize:RFValue(20), marginTop:RFValue(100)}}>Item Name</Text>
+                    <Text style={{borderWidth:RFValue(2), width:RFValue(280), borderColor:"#ff5722", padding:6, fontSize:RFValue(18), textAlign:'center'}}>{this.state.requested_item_name}</Text>
+                    <Text style={{textAlign:'center', fontSize:RFValue(20), marginTop:RFValue(40)}}>Status</Text>
+                    <Text style={{borderWidth:RFValue(2), width:RFValue(280), borderColor:"#ff5722", padding:6, fontSize:RFValue(18), textAlign:'center'}} >{this.state.requested_item_status}</Text>
+                    <Text style={{textAlign:'center', fontSize:RFValue(20), marginTop:RFValue(40)}}>Value</Text>
+                    <Text style={{borderWidth:RFValue(2), width:RFValue(280), borderColor:"#ff5722", padding:6, fontSize:RFValue(18), textAlign:'center'}} >{this.state.requested_item_value}</Text>
                     <TouchableOpacity style={styles.buttonStyle} onPress={()=>{
                         this.itemReceived();
                         this.sendNotification();
@@ -221,15 +239,15 @@ export default class ExchangeScreen extends React.Component{
 
 const styles = StyleSheet.create({
     inputBox:{
-        marginTop:30,
-        borderWidth:1,
-        borderRadius:8,
-        padding:6,
-        width:280,
+        marginTop:RFValue(30),
+        borderWidth:RFValue(1),
+        borderRadius:RFValue(8),
+        padding:RFValue(6),
+        width:RFValue(280),
         borderColor:'#f8be85'
     },
     buttonStyle:{
-        width:280,
+        width:RFValue(280),
         padding:10,
         borderRadius:10,
         backgroundColor:"#fb5722",
@@ -245,7 +263,7 @@ const styles = StyleSheet.create({
     },
     buttonText:{
         color:'white',
-        fontSize:20,
+        fontSize:RFValue(20),
         fontWeight:'bold'
     }
 })

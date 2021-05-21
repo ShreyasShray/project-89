@@ -7,7 +7,7 @@ import {
     KeyboardAvoidingView,
     FlatList
 } from 'react-native';
-import {ListItem} from 'react-native-elements';
+import {ListItem, RFValue} from 'react-native-elements';
 import MyHeader from '../components/MyHeader';
 import db from '../config';
 import firebase from 'firebase';
@@ -65,7 +65,7 @@ export default class HomeScreen extends React.Component{
                 {
                     this.state.allItems.length === 0?(
                         <View>
-                            <Text style={{textAlign:'center', marginTop:200}}>All Item Request</Text>
+                            <Text style={{textAlign:'center', marginTop:RFValue(200)}}>All Item Request</Text>
                         </View>
                     ):(
                         <FlatList 
@@ -82,8 +82,8 @@ export default class HomeScreen extends React.Component{
 
 const styles = StyleSheet.create({
     button:{
-        width:100,
-        height:30,
+        width:RFValue(100),
+        height:RFValue(30),
         justifyContent:'center',
         alignItems:'center',
         backgroundColor:"#ff5722"
